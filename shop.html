@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhoneHub - Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    };
+  </script>
+  <script defer>
+    let cart = [];
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      renderCart();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartList = document.getElementById("cart-items");
+      const total = document.getElementById("total");
+      cartList.innerHTML = "";
+      let sum = 0;
+
+      cart.forEach((item, i) => {
+        sum += item.price;
+        cartList.innerHTML += `
+          <li class="flex justify-between items-center">
+            <span>${item.name} - ₹${item.price}</span>
+            <button onclick="removeFromCart(${i})" class="text-red-500 hover:underline">Remove</button>
+          </li>
+        `;
+      });
+      total.textContent = `Total: ₹${sum}`;
+    }
+  </script>
+</head>
+
+<body class="bg-gray-900 text-gray-300">
+  <!-- Navbar -->
+  <nav class="bg-gray-800 shadow px-4 py-3 flex justify-between items-center">
+    <div class="text-xl font-bold text-blue-400">PhoneHub</div>
+    <ul class="hidden md:flex gap-6">
+      <li><a href="#" class="hover:text-blue-300">Home</a></li>
+      <li><a href="#products" class="hover:text-blue-300">Products</a></li>
+      <li><a href="#cart" class="hover:text-blue-300">Cart</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="bg-gray-800 text-center py-10">
+    <h1 class="text-3xl font-bold text-white">Trendy Phones for Everyone</h1>
+    <p class="text-gray-400 mt-2">Shop the latest smartphones at unbeatable prices!</p>
+  </section>
+
+  <!-- Product Listing -->
+  <section id="products" class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
+      <img src="i16.jpeg" alt="iPhone 16" class="w-full h-40 object-contain mb-2" />
+      <h2 class="font-semibold text-white">iPhone 16</h2>
+      <p class="text-gray-400">₹1,29,999</p>
+      <button onclick="addToCart('iPhone 16', 129999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </div>
+    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
+      <img src="i15.jpeg" alt="iPhone 15" class="w-full h-40 object-contain mb-2" />
+      <h2 class="font-semibold text-white">iPhone 15</h2>
+      <p class="text-gray-400">₹99,999</p>
+      <button onclick="addToCart('iPhone 15', 99999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </div>
+    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
+      <img src="s24.jpeg" class="w-full h-40 object-contain mb-2" />
+      <h2 class="font-semibold text-white">Samsung S24 Ultra</h2>
+      <p class="text-gray-400">₹1,19,999</p>
+      <button onclick="addToCart('Samsung S24 Ultra', 119999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </div>
+    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
+      <img src="S25.jpeg" alt="Samsung S25 Ultra" class="w-full h-40 object-contain mb-2" />
+      <h2 class="font-semibold text-white">Samsung S25 Ultra</h2>
+      <p class="text-gray-400">₹1,39,999</p>
+      <button onclick="addToCart('Samsung S25 Ultra', 139999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </div>
+    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
+      <img src="gt6.jpeg" alt="Realme GT 6" class="w-full h-40 object-contain mb-2" />
+      <h2 class="font-semibold text-white">Realme GT 6</h2>
+      <p class="text-gray-400">₹34,999</p>
+      <button onclick="addToCart('Realme GT 6', 34999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </div>
+    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
+      <img src="narzo.jpeg" alt="Realme Narzo 70 Pro" class="w-full h-40 object-contain mb-2" />
+      <h2 class="font-semibold text-white">Realme Narzo 70 Pro</h2>
+      <p class="text-gray-400">₹21,999</p>
+      <button onclick="addToCart('Realme Narzo 70 Pro', 21999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </div>
+    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
+      <img src="reno11.jpeg" alt="Oppo Reno 11" class="w-full h-40 object-contain mb-2" />
+      <h2 class="font-semibold text-white">Oppo Reno 11</h2>
+      <p class="text-gray-400">₹28,999</p>
+      <button onclick="addToCart('Oppo Reno 11', 28999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </div>
+    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
+      <img src="f25.jpeg" alt="Oppo F25 Pro" class="w-full h-40 object-contain mb-2" />
+      <h2 class="font-semibold text-white">Oppo F25 Pro</h2>
+      <p class="text-gray-400">₹23,499</p>
+      <button onclick="addToCart('Oppo F25 Pro', 23499)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </div>
+  </section>
+
+  <!-- Cart Section -->
+  <section id="cart" class="p-6 bg-gray-800 shadow mt-6 mx-4 rounded">
+    <h2 class="text-xl font-bold mb-4 text-white">🛒 Your Cart</h2>
+    <ul id="cart-items" class="space-y-2 text-gray-300"></ul>
+    <p id="total" class="mt-4 font-semibold text-white">Total: ₹0</p>
+    <button class="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded">Checkout</button>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-400 text-center p-4 mt-10">
+    <p>&copy; 2025 PhoneHub. All rights reserved.</p>
+    <div class="text-sm mt-2">
+      <a href="#" class="hover:underline hover:text-gray-200">About</a> |
+      <a href="#" class="hover:underline hover:text-gray-200">Contact</a> |
+      <a href="#" class="hover:underline hover:text-gray-200">Terms</a>
+    </div>
+  </footer>
+</body>
+
+</html>
