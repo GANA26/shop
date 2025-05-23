@@ -3,14 +3,18 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PhoneHub - Shop</title>
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
     };
   </script>
+
+  <!-- Cart logic -->
   <script defer>
     let cart = [];
 
@@ -30,29 +34,50 @@
       cartList.innerHTML = "";
       let sum = 0;
 
-      cart.forEach((item, i) => {
-        sum += item.price;
-        cartList.innerHTML += `
-          <li class="flex justify-between items-center">
-            <span>${item.name} - ₹${item.price}</span>
-            <button onclick="removeFromCart(${i})" class="text-red-500 hover:underline">Remove</button>
-          </li>
-        `;
-      });
-      total.textContent = `Total: ₹${sum}`;
+      if (cart.length === 0) {
+        cartList.innerHTML = `<li class="text-gray-400 italic">Your cart is empty.</li>`;
+      } else {
+        cart.forEach((item, i) => {
+          sum += item.price;
+          cartList.innerHTML += `
+            <li class="flex justify-between items-center border-b border-gray-700 pb-2">
+              <span>${item.name} - ₹${item.price.toLocaleString()}</span>
+              <button aria-label="Remove ${item.name} from cart" onclick="removeFromCart(${i})" class="text-red-500 hover:underline">Remove</button>
+            </li>
+          `;
+        });
+      }
+
+      total.textContent = `Total: ₹${sum.toLocaleString()}`;
     }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderCart();
+    });
+  </script>
+
+  <!-- Optional: Dark mode toggle -->
+  <script defer>
+    window.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('dark-toggle');
+      toggleBtn?.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+      });
+    });
   </script>
 </head>
 
-<body class="bg-gray-900 text-gray-300">
+<body class="bg-gray-900 text-gray-300 min-h-screen flex flex-col">
+
   <!-- Navbar -->
-  <nav class="bg-gray-800 shadow px-4 py-3 flex justify-between items-center">
+  <nav class="bg-gray-800 shadow px-4 py-3 flex justify-between items-center sticky top-0 z-50">
     <div class="text-xl font-bold text-blue-400">PhoneHub</div>
     <ul class="hidden md:flex gap-6">
       <li><a href="#" class="hover:text-blue-300">Home</a></li>
       <li><a href="#products" class="hover:text-blue-300">Products</a></li>
       <li><a href="#cart" class="hover:text-blue-300">Cart</a></li>
     </ul>
+    <button id="dark-toggle" aria-label="Toggle Dark Mode" class="ml-4 px-2 py-1 border border-blue-400 rounded text-blue-400 hover:bg-blue-400 hover:text-gray-900 transition">Toggle Dark</button>
   </nav>
 
   <!-- Hero Section -->
@@ -62,69 +87,77 @@
   </section>
 
   <!-- Product Listing -->
-  <section id="products" class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
-      <img src="i16.jpeg" alt="iPhone 16" class="w-full h-40 object-contain mb-2" />
+  <section id="products" class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 flex-grow">
+    <!-- Each product card -->
+    <article class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300 flex flex-col">
+      <img src="i16.jpeg" alt="iPhone 16" class="w-full h-40 object-contain mb-2" loading="lazy" onerror="this.src='placeholder.png';" />
       <h2 class="font-semibold text-white">iPhone 16</h2>
       <p class="text-gray-400">₹1,29,999</p>
-      <button onclick="addToCart('iPhone 16', 129999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
-    </div>
-    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
-      <img src="i15.jpeg" alt="iPhone 15" class="w-full h-40 object-contain mb-2" />
+      <button onclick="addToCart('iPhone 16', 129999)" class="mt-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </article>
+
+    <article class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300 flex flex-col">
+      <img src="i15.jpeg" alt="iPhone 15" class="w-full h-40 object-contain mb-2" loading="lazy" onerror="this.src='placeholder.png';" />
       <h2 class="font-semibold text-white">iPhone 15</h2>
       <p class="text-gray-400">₹99,999</p>
-      <button onclick="addToCart('iPhone 15', 99999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
-    </div>
-    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
-      <img src="s24.jpeg" class="w-full h-40 object-contain mb-2" />
+      <button onclick="addToCart('iPhone 15', 99999)" class="mt-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </article>
+
+    <article class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300 flex flex-col">
+      <img src="s24.jpeg" alt="Samsung S24 Ultra" class="w-full h-40 object-contain mb-2" loading="lazy" onerror="this.src='placeholder.png';" />
       <h2 class="font-semibold text-white">Samsung S24 Ultra</h2>
       <p class="text-gray-400">₹1,19,999</p>
-      <button onclick="addToCart('Samsung S24 Ultra', 119999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
-    </div>
-    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
-      <img src="S25.jpeg" alt="Samsung S25 Ultra" class="w-full h-40 object-contain mb-2" />
+      <button onclick="addToCart('Samsung S24 Ultra', 119999)" class="mt-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </article>
+
+    <article class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300 flex flex-col">
+      <img src="S25.jpeg" alt="Samsung S25 Ultra" class="w-full h-40 object-contain mb-2" loading="lazy" onerror="this.src='placeholder.png';" />
       <h2 class="font-semibold text-white">Samsung S25 Ultra</h2>
       <p class="text-gray-400">₹1,39,999</p>
-      <button onclick="addToCart('Samsung S25 Ultra', 139999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
-    </div>
-    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
-      <img src="gt6.jpeg" alt="Realme GT 6" class="w-full h-40 object-contain mb-2" />
+      <button onclick="addToCart('Samsung S25 Ultra', 139999)" class="mt-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </article>
+
+    <article class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300 flex flex-col">
+      <img src="gt6.jpeg" alt="Realme GT 6" class="w-full h-40 object-contain mb-2" loading="lazy" onerror="this.src='placeholder.png';" />
       <h2 class="font-semibold text-white">Realme GT 6</h2>
       <p class="text-gray-400">₹34,999</p>
-      <button onclick="addToCart('Realme GT 6', 34999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
-    </div>
-    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
-      <img src="narzo.jpeg" alt="Realme Narzo 70 Pro" class="w-full h-40 object-contain mb-2" />
+      <button onclick="addToCart('Realme GT 6', 34999)" class="mt-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </article>
+
+    <article class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300 flex flex-col">
+      <img src="narzo.jpeg" alt="Realme Narzo 70 Pro" class="w-full h-40 object-contain mb-2" loading="lazy" onerror="this.src='placeholder.png';" />
       <h2 class="font-semibold text-white">Realme Narzo 70 Pro</h2>
       <p class="text-gray-400">₹21,999</p>
-      <button onclick="addToCart('Realme Narzo 70 Pro', 21999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
-    </div>
-    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
-      <img src="reno11.jpeg" alt="Oppo Reno 11" class="w-full h-40 object-contain mb-2" />
+      <button onclick="addToCart('Realme Narzo 70 Pro', 21999)" class="mt-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </article>
+
+    <article class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300 flex flex-col">
+      <img src="reno11.jpeg" alt="Oppo Reno 11" class="w-full h-40 object-contain mb-2" loading="lazy" onerror="this.src='placeholder.png';" />
       <h2 class="font-semibold text-white">Oppo Reno 11</h2>
       <p class="text-gray-400">₹28,999</p>
-      <button onclick="addToCart('Oppo Reno 11', 28999)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
-    </div>
-    <div class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300">
-      <img src="f25.jpeg" alt="Oppo F25 Pro" class="w-full h-40 object-contain mb-2" />
+      <button onclick="addToCart('Oppo Reno 11', 28999)" class="mt-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </article>
+
+    <article class="bg-gray-800 p-4 shadow rounded hover:shadow-lg hover:bg-gray-700 transition-colors duration-300 flex flex-col">
+      <img src="f25.jpeg" alt="Oppo F25 Pro" class="w-full h-40 object-contain mb-2" loading="lazy" onerror="this.src='placeholder.png';" />
       <h2 class="font-semibold text-white">Oppo F25 Pro</h2>
       <p class="text-gray-400">₹23,499</p>
-      <button onclick="addToCart('Oppo F25 Pro', 23499)" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
-    </div>
+      <button onclick="addToCart('Oppo F25 Pro', 23499)" class="mt-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Add to Cart</button>
+    </article>
   </section>
 
   <!-- Cart Section -->
-  <section id="cart" class="p-6 bg-gray-800 shadow mt-6 mx-4 rounded">
+  <section id="cart" class="p-6 bg-gray-800 shadow mt-6 mx-4 rounded max-w-4xl w-full mx-auto">
     <h2 class="text-xl font-bold mb-4 text-white">🛒 Your Cart</h2>
     <ul id="cart-items" class="space-y-2 text-gray-300"></ul>
     <p id="total" class="mt-4 font-semibold text-white">Total: ₹0</p>
-    <button class="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded">Checkout</button>
+    <button onclick="alert('Checkout feature coming soon!')" class="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded">Checkout</button>
   </section>
 
   <!-- Footer -->
   <footer class="bg-gray-900 text-gray-400 text-center p-4 mt-10">
     <p>&copy; 2025 PhoneHub. All rights reserved.</p>
-    <div class="text-sm mt-2">
+    <div class="text-sm mt-2 space-x-2">
       <a href="#" class="hover:underline hover:text-gray-200">About</a> |
       <a href="#" class="hover:underline hover:text-gray-200">Contact</a> |
       <a href="#" class="hover:underline hover:text-gray-200">Terms</a>
